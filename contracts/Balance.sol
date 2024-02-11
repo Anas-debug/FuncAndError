@@ -10,10 +10,13 @@ contract Balance {
     }
     event Withdrawal(uint amount, uint when);
 
-    function withdraw(uint _amount) public payable {
-        require(msg.sender == owner, "Only owner can withdraw");
+    function withdraw(uint _amount) public payable onlyOwner(){
         require(msg.value >= _amount, "Insufficient funds");
         balance += _amount;
         emit Withdrawal(_amount, block.timestamp);
+    }
+    modifier onlyOwner(){
+        require(msg.sender == owner);
+        _;
     }
 }
